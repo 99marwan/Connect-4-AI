@@ -2,7 +2,12 @@ package sample;
 
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -10,15 +15,17 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class Controller<ColCount> implements Initializable {
+public class Controller<ColCount> {
 
     @FXML
     Pane pane;
@@ -46,7 +53,30 @@ public class Controller<ColCount> implements Initializable {
     }
 
 
-    public void addDisc(int x){
+    public void addDisc(int x) throws IOException {
+        int sum=0;
+        for(int i=0;i<7;i++){
+            sum+=colCount[i];
+        }
+        if(sum==42){
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Result");
+            alert.setHeaderText("Game is Over - winner is Jimmy");
+            alert.showAndWait();
+
+            Stage stage = (Stage) discroot.getScene().getWindow();
+            stage.close();
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+            Parent root = loader.load();
+            Stage stage2 = new Stage();
+            stage2.setScene(new Scene(root,640, 640));
+            stage2.setTitle("Welcome to the Game");
+            stage2.show();
+            return;
+        }
         if(colCount[x] < 6){
             Disc disc = new Disc(redTurn);
             disc.setTranslateX((x * 85) + 20);
@@ -59,8 +89,8 @@ public class Controller<ColCount> implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    public void initialize() {
         Arrays.fill(colCount,0);
         List<Rectangle> list = new ArrayList<>();
         List<Polygon> listPol = new ArrayList<>();
@@ -87,20 +117,11 @@ public class Controller<ColCount> implements Initializable {
 
             int finalX = x;
             rect.setOnMouseClicked(e -> {
-                if(finalX == 0)
+                try {
                     addDisc(finalX);
-                else if(finalX == 1)
-                    addDisc(finalX);
-                else if(finalX == 2)
-                    addDisc(finalX);
-                else if(finalX == 3)
-                    addDisc(finalX);
-                else if(finalX == 4)
-                    addDisc(finalX);
-                else if(finalX == 5)
-                    addDisc(finalX);
-                else if(finalX == 6)
-                    addDisc(finalX);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
 
             });
             list.add(rect);

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Home">
+   <children>
+      <Label layoutX="172.0" layoutY="50.0" prefHeight="61.0" prefWidth="238.0" text="Connect 4">
+         <font>
+            <Font name="DejaVu Serif Bold" size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="game" layoutX="252.0" layoutY="231.0" mnemonicParsing="false" onAction="#HandleGame" text="Go to game" />
+   </children>
+</AnchorPane>
