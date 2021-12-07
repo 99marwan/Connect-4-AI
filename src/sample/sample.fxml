@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 
-<GridPane fx:id="Gridpane" alignment="center" hgap="10" prefWidth="640.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane fx:id="Gridpane" alignment="center" hgap="10" prefWidth="640.0" vgap="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
@@ -24,7 +24,7 @@
             <Rectangle fx:id="rect4" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="560.0" layoutX="275.0" layoutY="80.0" onMouseClicked="#addDisc4" onMouseEntered="#showRect4" onMouseExited="#hideRect4" stroke="TRANSPARENT" strokeType="INSIDE" width="80.0" />
             <Rectangle fx:id="rect5" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="560.0" layoutX="360.0" layoutY="80.0" onMouseClicked="#addDisc5" onMouseEntered="#showRect5" onMouseExited="#hideRect5" stroke="TRANSPARENT" strokeType="INSIDE" width="80.0" />
             <Rectangle fx:id="rect6" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="560.0" layoutX="445.0" layoutY="80.0" onMouseClicked="#addDisc6" onMouseEntered="#showRect6" onMouseExited="#hideRect6" stroke="TRANSPARENT" strokeType="INSIDE" width="80.0" />
-            <Rectangle fx:id="rect7" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="560.0" layoutX="530.0" layoutY="80.0" onMouseEntered="#showRect7" onMouseExited="#hideRect7" stroke="TRANSPARENT" strokeType="INSIDE" width="80.0" />
+            <Rectangle fx:id="rect7" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="560.0" layoutX="530.0" layoutY="80.0" onMouseClicked="#addDisc7" onMouseEntered="#showRect7" onMouseExited="#hideRect7" stroke="TRANSPARENT" strokeType="INSIDE" width="80.0" />
             <Polygon fx:id="pol1" fill="#1f93ff00" layoutX="55.0" layoutY="3.0" points="-16.20001220703125, 40.0, 25.4000244140625, 40.0, 4.5999755859375, 76.20001220703125" stroke="#ffffff00" strokeType="INSIDE" />
             <Polygon fx:id="pol2" fill="#1f93ff00" layoutX="140.0" layoutY="3.0" points="-16.20001220703125, 40.0, 25.4000244140625, 40.0, 4.5999755859375, 76.20001220703125" stroke="TRANSPARENT" strokeType="INSIDE" />
             <Polygon fx:id="pol3" fill="#1f93ff00" layoutX="225.0" layoutY="3.0" points="-16.20001220703125, 40.0, 25.4000244140625, 40.0, 4.5999755859375, 76.20001220703125" stroke="TRANSPARENT" strokeType="INSIDE" />
