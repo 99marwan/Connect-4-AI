@@ -70,30 +70,13 @@ public class Controller<ColCount> {
 
     public void addDisc(int x,boolean turn) throws IOException {
         int sum=0;
-        for(int i=0;i<7;i++){
+        /*for(int i=0;i<7;i++){
             sum+=colCount[i];
-        }
-        if(sum==42){
-            int[] result = logic.calculateScore(initial);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Result");
-            alert.setHeaderText("Game is Over => player1 is"+result[0]+" / player 2 is "+result[1]);
-            alert.showAndWait();
-
-            Stage stage = (Stage) discroot.getScene().getWindow();
-            stage.close();
-
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
-            Parent root = loader.load();
-            Stage stage2 = new Stage();
-            stage2.setScene(new Scene(root,640, 640));
-            stage2.setTitle("Welcome to the Game");
-            stage2.show();
-            return;
-        }
+        }*/
         if(turn) {
-            if (colCount[x] < 6) {
+            System.out.println("player game");
+            if (colCount[x]  < 6) {
+                System.out.println("entered");
                 Disc disc = new Disc(redTurn);
                 disc.setTranslateX((x * 85) + 20);
                 discroot.getChildren().add(disc);
@@ -109,25 +92,30 @@ public class Controller<ColCount> {
                 System.out.println(initial.getGameMoves());
                 redTurn = !redTurn;
                 animation.play();
+
                 if(alphaBeta_Pruning){
                     initial = algorithm.decidePruning(initial,k);
                     colCount=initial.getColumnNumber();
                     String temp= initial.getGameMoves();
+                    System.out.println("computer will play in col   :  " + Character.getNumericValue(temp.charAt(temp.length()-1)));
                     addDisc(Character.getNumericValue(temp.charAt(temp.length()-1)),redTurn);
                 }else{
                     initial = algorithm.decide(initial,k);
                     colCount=initial.getColumnNumber();
                     String temp= initial.getGameMoves();
+                    System.out.println("computer will play in col   :  " + Character.getNumericValue(temp.charAt(temp.length()-1)));
                     addDisc(Character.getNumericValue(temp.charAt(temp.length()-1)),redTurn);
                 }
             }
         }else{
-            if(colCount[x] < 6){
+            System.out.println("computer game");
+            if(colCount[x]  <= 6){
+                System.out.println("entered");
                 Disc disc = new Disc(redTurn);
                 disc.setTranslateX((x * 85) + 20);
                 discroot.getChildren().add(disc);
                 TranslateTransition animation = new TranslateTransition(Duration.seconds(0.5),disc);
-                animation.setToY(((5 - colCount[x]) * 85) + 20);
+                animation.setToY(((5 - colCount[x] + 1) * 85) + 20);
                 for(int i=0;i<7;i++){
                     System.out.print(initial.getColumnNumber()[i]+" ");
                 }
@@ -135,6 +123,29 @@ public class Controller<ColCount> {
                 System.out.println(initial.getGameMoves());
                 redTurn = !redTurn;
                 animation.play();
+                sum=0;
+                for(int i=0;i<7;i++){
+                    sum+=colCount[i];
+                }
+                if(sum==42){
+                    int[] result = logic.calculateScore(initial);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Result");
+                    alert.setHeaderText("Game is Over => player1 is "+result[0]+" / player 2 is "+result[1]);
+                    alert.showAndWait();
+
+                    Stage stage = (Stage) discroot.getScene().getWindow();
+                    stage.close();
+
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+                    Parent root = loader.load();
+                    Stage stage2 = new Stage();
+                    stage2.setScene(new Scene(root,640, 640));
+                    stage2.setTitle("Welcome to the Game");
+                    stage2.show();
+                    return;
+                }
             }
         }
     }
