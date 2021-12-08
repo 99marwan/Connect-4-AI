@@ -273,12 +273,13 @@ public class GameLogic {
         for (int diagonalDir = 0; diagonalDir < diagonals.length; diagonalDir++) {
             startIndices = diagonals[diagonalDir];
 
-            chainStarted = false;
+
             row = 0;
             column = 0;
             for (Point start : startIndices) {
                 row = start.x;
                 column = start.y;
+                chainStarted = false;
                 indicesToCheck = new ArrayList<Point>();
                 if (diagonalDir == 0) {
                     while ( row > -1 && column < width ) {
