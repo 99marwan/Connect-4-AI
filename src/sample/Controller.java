@@ -32,7 +32,8 @@ public class Controller<ColCount> {
     @FXML
     Pane discroot;
 
-
+    GameLogic logic = new GameLogic();
+    Algorithm algorithm = new Algorithm();
     public int[] colCount = new int[7];
     private boolean redTurn = true;
     private int rows = 6;
@@ -67,16 +68,16 @@ public class Controller<ColCount> {
     }
 
 
-    public void addDisc(int x) throws IOException {
+    public void addDisc(int x,boolean turn) throws IOException {
         int sum=0;
         for(int i=0;i<7;i++){
             sum+=colCount[i];
         }
         if(sum==42){
-
+            int[] result = logic.calculateScore(initial);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Result");
-            alert.setHeaderText("Game is Over - winner is Jimmy");
+            alert.setHeaderText("Game is Over => player1 is"+result[0]+" / player 2 is "+result[1]);
             alert.showAndWait();
 
             Stage stage = (Stage) discroot.getScene().getWindow();
@@ -91,21 +92,55 @@ public class Controller<ColCount> {
             stage2.show();
             return;
         }
-        if(colCount[x] < 6){
-            Disc disc = new Disc(redTurn);
-            disc.setTranslateX((x * 85) + 20);
-            discroot.getChildren().add(disc);
-            TranslateTransition animation = new TranslateTransition(Duration.seconds(0.5),disc);
-            animation.setToY(((5 - colCount[x]) * 85) + 20);
-            colCount[x]++;
-            redTurn = !redTurn;
-            animation.play();
+        if(turn) {
+            if (colCount[x] < 6) {
+                Disc disc = new Disc(redTurn);
+                disc.setTranslateX((x * 85) + 20);
+                discroot.getChildren().add(disc);
+                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.5), disc);
+                animation.setToY(((5 - colCount[x]) * 85) + 20);
+                colCount[x]++;
+                initial.setColumnNumber(colCount);
+                initial.setGameMoves(initial.getGameMoves() + String.valueOf(x));
+                for (int i = 0; i < 7; i++) {
+                    System.out.print(initial.getColumnNumber()[i] + " ");
+                }
+                System.out.println();
+                System.out.println(initial.getGameMoves());
+                redTurn = !redTurn;
+                animation.play();
+                if(alphaBeta_Pruning){
+                    initial = algorithm.decidePruning(initial,k);
+                    colCount=initial.getColumnNumber();
+                    String temp= initial.getGameMoves();
+                    addDisc(Character.getNumericValue(temp.charAt(temp.length()-1)),redTurn);
+                }else{
+                    initial = algorithm.decide(initial,k);
+                    colCount=initial.getColumnNumber();
+                    String temp= initial.getGameMoves();
+                    addDisc(Character.getNumericValue(temp.charAt(temp.length()-1)),redTurn);
+                }
+            }
+        }else{
+            if(colCount[x] < 6){
+                Disc disc = new Disc(redTurn);
+                disc.setTranslateX((x * 85) + 20);
+                discroot.getChildren().add(disc);
+                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.5),disc);
+                animation.setToY(((5 - colCount[x]) * 85) + 20);
+                for(int i=0;i<7;i++){
+                    System.out.print(initial.getColumnNumber()[i]+" ");
+                }
+                System.out.println();
+                System.out.println(initial.getGameMoves());
+                redTurn = !redTurn;
+                animation.play();
+            }
         }
     }
 
 
     public void initialize() {
-        GameLogic logic = new GameLogic();
         initial = logic.Initialize_Game(rows,cols,k,alphaBeta_Pruning,human_isPlayer1);
         colCount=initial.getColumnNumber();
         List<Rectangle> list = new ArrayList<>();
@@ -134,7 +169,7 @@ public class Controller<ColCount> {
             int finalX = x;
             rect.setOnMouseClicked(e -> {
                 try {
-                    addDisc(finalX);
+                    addDisc(finalX,redTurn);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

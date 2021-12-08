@@ -6,16 +6,15 @@ import java.util.ArrayList;
 
 public class Algorithm {
 
-    GameLogic logic;
+    GameLogic logic=new GameLogic();
 
     GameState decide(GameState state,int k){
-        Pair<GameState, Integer> pair =MAXIMIZE(state,k);
+        Pair<GameState, Integer> pair =MINIMIZE(state,k);
         return pair.getKey();
     }
 
     Pair<GameState, Integer> MAXIMIZE(GameState state,int k){
-        if(k==0){
-            logic=new GameLogic();
+        if(k<=0){
             int val = logic.calculateHeuristicValue(state);
             return new Pair<GameState, Integer>(null,val);
         }
@@ -23,7 +22,8 @@ public class Algorithm {
         ArrayList<GameState> children = logic.Gen_Children(state);
 
         for (GameState child : children) {
-            Pair<GameState, Integer> util = MINIMIZE(child, k--);
+            k--;
+            Pair<GameState, Integer> util = MINIMIZE(child, k);
             if (util.getValue() > max.getValue()) {
                 max = new Pair<>(child, util.getValue());
             }
@@ -32,8 +32,7 @@ public class Algorithm {
     }
 
     Pair<GameState, Integer> MINIMIZE(GameState state,int k){
-        if(k==0){
-            logic=new GameLogic();
+        if(k<=0){
             int val = logic.calculateHeuristicValue(state);
             return new Pair<GameState, Integer>(null,val);
         }
@@ -41,7 +40,8 @@ public class Algorithm {
         ArrayList<GameState> children = logic.Gen_Children(state);
 
         for (GameState child : children) {
-            Pair<GameState, Integer> util = MAXIMIZE(child, k--);
+            k--;
+            Pair<GameState, Integer> util = MAXIMIZE(child, k);
             if (util.getValue() < min.getValue()) {
                 min = new Pair<>(child, util.getValue());
             }
@@ -53,13 +53,12 @@ public class Algorithm {
     //===================================================================================
 
     GameState decidePruning(GameState state,int k){
-        Pair<GameState, Integer> pair =MAXIMIZEPruning(state,k,Integer.MIN_VALUE,Integer.MAX_VALUE);
+        Pair<GameState, Integer> pair =MINIMIZEPruning(state,k,Integer.MIN_VALUE,Integer.MAX_VALUE);
         return pair.getKey();
     }
 
     Pair<GameState, Integer> MAXIMIZEPruning(GameState state,int k,int alpha,int beta){
-        if(k==0){
-            logic=new GameLogic();
+        if(k<=0){
             int val = logic.calculateHeuristicValue(state);
             return new Pair<GameState, Integer>(null,val);
         }
@@ -67,7 +66,8 @@ public class Algorithm {
         ArrayList<GameState> children = logic.Gen_Children(state);
 
         for (GameState child : children) {
-            Pair<GameState, Integer> util = MINIMIZEPruning(child, k--,alpha,beta);
+            k--;
+            Pair<GameState, Integer> util = MINIMIZEPruning(child, k,alpha,beta);
             if (util.getValue() > max.getValue()) {
                 max = new Pair<>(child, util.getValue());
             }
@@ -84,8 +84,7 @@ public class Algorithm {
     }
 
     Pair<GameState, Integer> MINIMIZEPruning(GameState state,int k,int alpha,int beta){
-        if(k==0){
-            logic=new GameLogic();
+        if(k<=0){
             int val = logic.calculateHeuristicValue(state);
             return new Pair<GameState, Integer>(null,val);
         }
@@ -93,7 +92,8 @@ public class Algorithm {
         ArrayList<GameState> children = logic.Gen_Children(state);
 
         for (GameState child : children) {
-            Pair<GameState, Integer> util = MAXIMIZEPruning(child, k--,alpha,beta);
+            k--;
+            Pair<GameState, Integer> util = MAXIMIZEPruning(child, k,alpha,beta);
             if (util.getValue() < min.getValue()) {
                 min = new Pair<>(child, util.getValue());
             }

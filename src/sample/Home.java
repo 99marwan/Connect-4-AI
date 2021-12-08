@@ -42,8 +42,8 @@ public class Home {
             if(algo.getValue().equals("Minmax with pruning")){
                 x=true;
             }
-            sceneCont.construct(Integer.getInteger(input_k.getText()),x,true);
-            sceneCont.initialize();
+            sceneCont.construct(Integer.parseInt(input_k.getText()),x,true);
+            //sceneCont.initialize();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Connect 4");

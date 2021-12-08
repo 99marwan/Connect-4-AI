@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 public class GameLogic {
 
-    private int length;
+    private int length=6;
 
-    private int width;
+    private int width=7;
 
     private int k;
 
