@@ -37,6 +37,12 @@ public class Controller<ColCount> {
     private boolean redTurn = true;
     private int rows = 6;
     private int cols = 7;
+    private int k;
+    GameState initial;
+
+    private boolean alphaBeta_Pruning;
+
+    private boolean human_isPlayer1;
 
 
 
@@ -50,6 +56,14 @@ public class Controller<ColCount> {
             setLayoutX(0);
             setLayoutY(0);
         }
+    }
+    public void construct(int k, boolean alphaBeta_Pruning, boolean human_isPlayer1){
+        if (k > 42) {
+            k = 42;
+        }
+        this.k = k;
+        this.alphaBeta_Pruning = alphaBeta_Pruning;
+        this.human_isPlayer1 = human_isPlayer1;
     }
 
 
@@ -91,7 +105,9 @@ public class Controller<ColCount> {
 
 
     public void initialize() {
-        Arrays.fill(colCount,0);
+        GameLogic logic = new GameLogic();
+        initial = logic.Initialize_Game(rows,cols,k,alphaBeta_Pruning,human_isPlayer1);
+        colCount=initial.getColumnNumber();
         List<Rectangle> list = new ArrayList<>();
         List<Polygon> listPol = new ArrayList<>();
         Double[] points = {-16.20001220703125, 40.0, 25.4000244140625, 40.0, 4.5999755859375, 76.20001220703125};
