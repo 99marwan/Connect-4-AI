@@ -14,7 +14,6 @@ public class Algorithm {
     }
 
     Pair<GameState, Integer> MAXIMIZE(GameState state,int k){
-        System.out.println(k);
         if(k<=0){
             int val = logic.calculateHeuristicValue(state);
             return new Pair<GameState, Integer>(null,val);
@@ -34,7 +33,6 @@ public class Algorithm {
     }
 
     Pair<GameState, Integer> MINIMIZE(GameState state,int k){
-        System.out.println(k);
         if(k<=0){
             int val = logic.calculateHeuristicValue(state);
             return new Pair<GameState, Integer>(null,val);
@@ -62,7 +60,6 @@ public class Algorithm {
     }
 
     Pair<GameState, Integer> MAXIMIZEPruning(GameState state,int k,int alpha,int beta){
-        System.out.println(k);
         if(k<=0){
             int val = logic.calculateHeuristicValue(state);
             return new Pair<GameState, Integer>(null,val);
@@ -90,7 +87,6 @@ public class Algorithm {
     }
 
     Pair<GameState, Integer> MINIMIZEPruning(GameState state,int k,int alpha,int beta){
-        System.out.println(k);
         if(k<=0){
             int val = logic.calculateHeuristicValue(state);
             return new Pair<GameState, Integer>(null,val);
