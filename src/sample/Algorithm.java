@@ -10,46 +10,42 @@ import java.util.Queue;
 public class Algorithm {
     class Node{
         int val;
-        Node[] children = new Node[7];
+        ArrayList<Node> children = new ArrayList<>();
         Node (int value){
             val = value;
         }
     }
-    public String buildTreeWithPreOrder(Node node) {
+    public void buildTreeWithPreOrder(Node node) {
 
         if (node == null) {
-            return "";
+            return ;
         }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("(" + node.val + ")");
-
-
+        System.out.print("(" + node.val + ")");
 
         String newPointer ;
 
-        for (int i = 0; i < 7;i++){
-            if((i+1 < 7 && node.children[i+1] == null) || i == 6) {
+        for (int i = 0; i < node.children.size();i++){
+            if((i + 1 == node.children.size()) || i == node.children.size()-1) {
                 newPointer = " └──";
-                traverseNodes(sb, "", newPointer, node.children[i], false);
+                traverseNodes( "", newPointer, node.children.get(i), false);
             }
             else{
                 newPointer  = " ├──";
-                traverseNodes(sb, "", newPointer, node.children[i], true);
+                traverseNodes( "", newPointer, node.children.get(i), true);
             }
-
-
         }
 
-        return sb.toString();
     }
-    public void traverseNodes(StringBuilder sb, String padding, String pointer, Node node,
+    public void traverseNodes(String padding, String pointer, Node node,
                               boolean hasRightSibling) {
         if (node != null) {
-            sb.append("\n");
-            sb.append(padding);
-            sb.append(pointer);
-            sb.append("(" + node.val + ")");
+
+            System.out.println();
+            System.out.print(padding);
+            System.out.print(pointer);
+            System.out.print("(" + node.val + ")");
+
+
 
             StringBuilder paddingBuilder = new StringBuilder(padding);
             if (hasRightSibling) {
@@ -61,14 +57,14 @@ public class Algorithm {
             String newPadding = paddingBuilder.toString();
             String newPointer ;
 
-            for (int i = 0; i < 7;i++){
-                if((i+1 < 7 && node.children[i+1] == null) || i == 6) {
+            for (int i = 0; i < node.children.size();i++){
+                if((i + 1 == node.children.size()) || i == node.children.size()-1) {
                     newPointer = " └──";
-                    traverseNodes(sb, newPadding, newPointer, node.children[i], false);
+                    traverseNodes(newPadding, newPointer, node.children.get(i), false);
                 }
                 else{
                     newPointer  = " ├──";
-                    traverseNodes(sb, newPadding, newPointer, node.children[i], true);
+                    traverseNodes(newPadding, newPointer, node.children.get(i), true);
                 }
 
 
@@ -76,35 +72,9 @@ public class Algorithm {
         }
     }
     public void printTree(Node root) {
-        System.out.print(buildTreeWithPreOrder(root));
+        buildTreeWithPreOrder(root);
     }
-//    public void buildTreeWithPreOrder(StringBuilder sb, String padding, String pointer, Node node) {
-//        if (node != null) {
-//            sb.append(padding);
-//            sb.append(pointer);
-//            sb.append("(" + node.val + ")");
-//            sb.append("\n");
-//
-//            StringBuilder paddingBuilder = new StringBuilder(padding);
-//            paddingBuilder.append("│  ");
-//
-//            String newPadding = paddingBuilder.toString();
-//            String newPointer ;
-//
-//            for (int i = 0; i < 7;i++){
-//                if((i+1 < 7 && node.children[i+1] == null) || i == 6)
-//                    newPointer =  "└──";
-//                else
-//                    newPointer  = "├──";
-//                buildTreeWithPreOrder(sb, newPadding, newPointer, node.children[i]);
-//            }
-//        }
-//    }
-//    public void printTree(Node root) {
-//        StringBuilder sb = new StringBuilder();
-//        buildTreeWithPreOrder(sb, "", "",root);
-//        System.out.print(sb.toString());
-//    }
+
 
 
     GameLogic logic=new GameLogic();
@@ -132,8 +102,9 @@ public class Algorithm {
         for (GameState child : children) {
             int temp =k;
             temp--;
-            root.children[childCount] = new Node(0);
-            Pair<GameState, Integer> util = MINIMIZE(child, temp,root.children[childCount++]);
+            root.children.add(new Node(0));
+            Pair<GameState, Integer> util = MINIMIZE(child, temp,root.children.get(childCount));
+            childCount++;
 
             if (util.getValue() > max.getValue()) {
                 max = new Pair<>(child, util.getValue());
@@ -157,8 +128,9 @@ public class Algorithm {
         for (GameState child : children) {
             int temp =k;
             temp--;
-            root.children[childCount] = new Node(0);
-            Pair<GameState, Integer> util = MAXIMIZE(child, temp,root.children[childCount++]);
+            root.children.add(new Node(0));
+            Pair<GameState, Integer> util = MAXIMIZE(child, temp,root.children.get(childCount));
+            childCount++;
             if (util.getValue() < min.getValue()) {
                 min = new Pair<>(child, util.getValue());
             }
@@ -193,8 +165,9 @@ public class Algorithm {
         for (GameState child : children) {
             int temp =k;
             temp--;
-            root.children[childCount] = new Node(0);
-            Pair<GameState, Integer> util = MINIMIZEPruning(child, temp,alpha,beta,root.children[childCount++]);
+            root.children.add(new Node(0));
+            Pair<GameState, Integer> util = MINIMIZEPruning(child, temp,alpha,beta,root.children.get(childCount));
+            childCount++;
             if (util.getValue() > max.getValue()) {
                 max = new Pair<>(child, util.getValue());
             }
@@ -225,8 +198,9 @@ public class Algorithm {
         for (GameState child : children) {
             int temp =k;
             temp--;
-            root.children[childCount] = new Node(0);
-            Pair<GameState, Integer> util = MAXIMIZEPruning(child, temp,alpha,beta,root.children[childCount++]);
+            root.children.add(new Node(0));
+            Pair<GameState, Integer> util = MAXIMIZEPruning(child, temp,alpha,beta,root.children.get(childCount));
+            childCount++;
             if (util.getValue() < min.getValue()) {
                 min = new Pair<>(child, util.getValue());
             }

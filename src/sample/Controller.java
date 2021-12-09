@@ -79,7 +79,7 @@ public class Controller<ColCount> {
                 Disc disc = new Disc(redTurn);
                 disc.setTranslateX((x * 85) + 20);
                 discroot.getChildren().add(disc);
-                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.15), disc);
+                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.1), disc);
                 animation.setToY(((5 - colCount[x]) * 85) + 20);
                 colCount[x]++;
                 initial.setColumnNumber(colCount);
