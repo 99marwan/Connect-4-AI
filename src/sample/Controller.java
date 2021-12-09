@@ -48,8 +48,7 @@ public class Controller<ColCount> {
 
     private boolean human_isPlayer1;
 
-
-
+    //the disc of the game
     private static class Disc extends Circle{
         boolean red;
         public Disc(boolean red){
@@ -61,6 +60,8 @@ public class Controller<ColCount> {
             setLayoutY(0);
         }
     }
+
+    //construction of variables
     public void construct(int k, boolean alphaBeta_Pruning, boolean human_isPlayer1){
         if (k > 42) {
             k = 42;
@@ -70,7 +71,7 @@ public class Controller<ColCount> {
         this.human_isPlayer1 = human_isPlayer1;
     }
 
-
+    //Function to put disc in corresponding place
     public void addDisc(int x,boolean turn) throws IOException {
         int sum=0;
         if(turn) {
@@ -79,7 +80,7 @@ public class Controller<ColCount> {
                 Disc disc = new Disc(redTurn);
                 disc.setTranslateX((x * 85) + 20);
                 discroot.getChildren().add(disc);
-                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.1), disc);
+                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.05), disc);
                 animation.setToY(((5 - colCount[x]) * 85) + 20);
                 colCount[x]++;
                 initial.setColumnNumber(colCount);
@@ -94,6 +95,7 @@ public class Controller<ColCount> {
                 notFull=true;
                 think.setText("Computer is Thinking ^_^");
                 think.setTextFill(Color.RED);
+                System.out.println("=================================================================================================");
             }else {
                 think.setText("Try Another Column, This one is full :(");
                 think.setTextFill(Color.RED);
@@ -113,8 +115,10 @@ public class Controller<ColCount> {
                 }
                 System.out.println();
                 System.out.println(initial.getGameMoves());
+                System.out.println("=================================================================================================");
                 redTurn = !redTurn;
                 animation.play();
+
                 sum=0;
                 for(int i=0;i<7;i++){
                     sum+=colCount[i];
@@ -142,6 +146,7 @@ public class Controller<ColCount> {
         }
     }
 
+    //Function of the computer thinking and put its disk
     public void aiDisc() throws IOException {
         if(alphaBeta_Pruning){
             initial = algorithm.decidePruning(initial,k);
@@ -158,12 +163,16 @@ public class Controller<ColCount> {
         }
     }
 
+    //Initialization of the board, circles, polygon arrow
     public void initialize() {
         initial = logic.Initialize_Game(rows,cols,k,alphaBeta_Pruning,human_isPlayer1);
         colCount=initial.getColumnNumber();
         List<Rectangle> list = new ArrayList<>();
         List<Polygon> listPol = new ArrayList<>();
         Double[] points = {-16.20001220703125, 40.0, 25.4000244140625, 40.0, 4.5999755859375, 76.20001220703125};
+
+        //creation of Rectangles that show which column your cursor on
+        //creation of arrow above the rectangle
         for (int x = 0; x < cols; x++) {
             Rectangle rect = new Rectangle(0,148,80,560);
             rect.setTranslateX((x*85) + 20);
@@ -173,6 +182,7 @@ public class Controller<ColCount> {
             pol.setLayoutX(55 + (x * 85));
             pol.setLayoutY(70);
             pol.setFill(Color.TRANSPARENT);
+
             rect.setOnMouseEntered(e -> {
                 rect.setFill(Color.rgb(255,110,31, 0.3));
                 pol.setFill(Color.DODGERBLUE);
@@ -207,6 +217,8 @@ public class Controller<ColCount> {
         }
         pane.getChildren().addAll(listPol);
         pane.getChildren().addAll(list);
+
+        //creation of board of blue rectangle and white circles
         Shape shape = new Rectangle(0,148,640,560);
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
