@@ -15,7 +15,7 @@
         <RowConstraints />
     </rowConstraints>
     <children>
-        <Pane fx:id="pane" prefHeight="708.0" prefWidth="640.0">
+        <Pane fx:id="pane" prefHeight="708.0" prefWidth="640.0" style="-fx-background-color: #D3D3D3;">
             <children>
                 <Pane fx:id="discroot" layoutY="148.0" prefHeight="560.0" prefWidth="640.0" />
             <Label fx:id="think" layoutX="13.0" layoutY="14.0" prefHeight="50.0" prefWidth="608.0">
