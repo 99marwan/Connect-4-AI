@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -31,6 +32,8 @@ public class Controller<ColCount> {
     Pane pane;
     @FXML
     Pane discroot;
+    @FXML
+    Label think;
 
     GameLogic logic = new GameLogic();
     Algorithm algorithm = new Algorithm();
@@ -40,7 +43,7 @@ public class Controller<ColCount> {
     private int cols = 7;
     private int k;
     GameState initial;
-
+    boolean notFull =true;
     private boolean alphaBeta_Pruning;
 
     private boolean human_isPlayer1;
@@ -70,17 +73,13 @@ public class Controller<ColCount> {
 
     public void addDisc(int x,boolean turn) throws IOException {
         int sum=0;
-        /*for(int i=0;i<7;i++){
-            sum+=colCount[i];
-        }*/
         if(turn) {
             System.out.println("player game");
             if (colCount[x]  < 6) {
-                System.out.println("entered");
                 Disc disc = new Disc(redTurn);
                 disc.setTranslateX((x * 85) + 20);
                 discroot.getChildren().add(disc);
-                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.5), disc);
+                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.15), disc);
                 animation.setToY(((5 - colCount[x]) * 85) + 20);
                 colCount[x]++;
                 initial.setColumnNumber(colCount);
@@ -92,29 +91,22 @@ public class Controller<ColCount> {
                 System.out.println(initial.getGameMoves());
                 redTurn = !redTurn;
                 animation.play();
-
-                if(alphaBeta_Pruning){
-                    initial = algorithm.decidePruning(initial,k);
-                    colCount=initial.getColumnNumber();
-                    String temp= initial.getGameMoves();
-                    System.out.println("computer will play in col   :  " + Character.getNumericValue(temp.charAt(temp.length()-1)));
-                    addDisc(Character.getNumericValue(temp.charAt(temp.length()-1)),redTurn);
-                }else{
-                    initial = algorithm.decide(initial,k);
-                    colCount=initial.getColumnNumber();
-                    String temp= initial.getGameMoves();
-                    System.out.println("computer will play in col   :  " + Character.getNumericValue(temp.charAt(temp.length()-1)));
-                    addDisc(Character.getNumericValue(temp.charAt(temp.length()-1)),redTurn);
-                }
+                notFull=true;
+                think.setText("Computer is Thinking ^_^");
+                think.setTextFill(Color.RED);
+            }else {
+                think.setText("Try Another Column, This one is full :(");
+                think.setTextFill(Color.RED);
+                notFull=false;
             }
         }else{
+            think.setText("");
             System.out.println("computer game");
             if(colCount[x]  <= 6){
-                System.out.println("entered");
                 Disc disc = new Disc(redTurn);
                 disc.setTranslateX((x * 85) + 20);
                 discroot.getChildren().add(disc);
-                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.5),disc);
+                TranslateTransition animation = new TranslateTransition(Duration.seconds(0.2),disc);
                 animation.setToY(((5 - colCount[x] + 1) * 85) + 20);
                 for(int i=0;i<7;i++){
                     System.out.print(initial.getColumnNumber()[i]+" ");
@@ -150,6 +142,21 @@ public class Controller<ColCount> {
         }
     }
 
+    public void aiDisc() throws IOException {
+        if(alphaBeta_Pruning){
+            initial = algorithm.decidePruning(initial,k);
+            colCount=initial.getColumnNumber();
+            String temp= initial.getGameMoves();
+            System.out.println("computer will play in col   :  " + Character.getNumericValue(temp.charAt(temp.length()-1)));
+            addDisc(Character.getNumericValue(temp.charAt(temp.length()-1)),redTurn);
+        }else{
+            initial = algorithm.decide(initial,k);
+            colCount=initial.getColumnNumber();
+            String temp= initial.getGameMoves();
+            System.out.println("computer will play in col   :  " + Character.getNumericValue(temp.charAt(temp.length()-1)));
+            addDisc(Character.getNumericValue(temp.charAt(temp.length()-1)),redTurn);
+        }
+    }
 
     public void initialize() {
         initial = logic.Initialize_Game(rows,cols,k,alphaBeta_Pruning,human_isPlayer1);
@@ -158,13 +165,13 @@ public class Controller<ColCount> {
         List<Polygon> listPol = new ArrayList<>();
         Double[] points = {-16.20001220703125, 40.0, 25.4000244140625, 40.0, 4.5999755859375, 76.20001220703125};
         for (int x = 0; x < cols; x++) {
-            Rectangle rect = new Rectangle(0,80,80,560);
+            Rectangle rect = new Rectangle(0,148,80,560);
             rect.setTranslateX((x*85) + 20);
             rect.setFill(Color.TRANSPARENT);
             Polygon pol = new Polygon();
             pol.getPoints().addAll(points);
             pol.setLayoutX(55 + (x * 85));
-            pol.setLayoutY(3);
+            pol.setLayoutY(70);
             pol.setFill(Color.TRANSPARENT);
             rect.setOnMouseEntered(e -> {
                 rect.setFill(Color.rgb(255,110,31, 0.3));
@@ -178,7 +185,7 @@ public class Controller<ColCount> {
             });
 
             int finalX = x;
-            rect.setOnMouseClicked(e -> {
+            rect.setOnMousePressed(e -> {
                 try {
                     addDisc(finalX,redTurn);
                 } catch (IOException ex) {
@@ -186,19 +193,28 @@ public class Controller<ColCount> {
                 }
 
             });
+            rect.setOnMouseReleased(e -> {
+                try {
+                    if(notFull) {
+                        aiDisc();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
             list.add(rect);
             listPol.add(pol);
         }
         pane.getChildren().addAll(listPol);
         pane.getChildren().addAll(list);
-        Shape shape = new Rectangle(0,80,640,560);
+        Shape shape = new Rectangle(0,148,640,560);
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
                 Circle circle = new Circle(40);
                 circle.setCenterX(40);
                 circle.setCenterY(40);
                 circle.setTranslateX((x * 85) + 20);
-                circle.setTranslateY((y * 85) + 100);
+                circle.setTranslateY((y * 85) + 168);
                 circle.setFill(Color.WHITE);
                 shape = Shape.subtract(shape,circle);
             }
