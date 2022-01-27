@@ -70,3 +70,6 @@ GameState decidePruning(GameState state , int k):  take the root where you need 
 Pair<GameState, Integer> MAXIMIZE(GameState state,int k,int alpha,int beta,Node root)  used to get the maximum heuristic of a child among all the children of the state parameter .. By traversing down the tree until we reach k level and calculate it’s heuristic by a pre-defined function and propagate the value but doesn’t take into consideration the branches with have alpha >= beta 
 
 Pair<GameState, Integer> MINIMIZE(GameState state,int k,int alpha,int beta,Node root)  used to get the minimum heuristic of a child among all the children of the state parameter .. By traversing down the tree until we reach k level and calculate it’s heuristic by a pre-defined function and propagate the value but doesn’t take into consideration the branches with have alpha >= beta
+  
+  
+  for more info : https://drive.google.com/file/d/1nRuOrZDhOjSYjoEEkuF6flS0Oy29hHLX/view?usp=sharing
